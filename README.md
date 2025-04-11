@@ -3,6 +3,13 @@
 ## Generate disparity and depth maps from stereo image pairs using OpenCV's StereoSGBM
 
 **Location:** `stereo_matching.py`
+```bash
+python stereo_matching.py \
+    --left_img_path path/to/left_image.png \
+    --right_img_path path/to/right_image.png \
+    --output_dir path/to/output_directory \
+    --cam_info_file
+```
 
 ## Generate prompt-based segmentations using Grounded-SAM for all images in a folder
 
