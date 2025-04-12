@@ -6,6 +6,13 @@ cd image_extraction
 bash extract_image_from_bag.sh <path/to/bagfile> <path/to/output_directory>
 ```
 
+## Extract Odom to Camera Transform from a rosbag
+```
+source /opt/ros/<your_ros_distribution>/setup.bash
+cd transform_tree_extraction
+bash tf_listener.sh <path/to/your/image/times/file> <path/to/your/bag/file>
+```
+
 ## Generate disparity and depth maps from stereo image pairs using OpenCV's StereoSGBM
 
 **Location:** `stereo_matching.py`
@@ -31,5 +38,3 @@ bash run_batch_segmentation.sh <image/folder> <output/segmentation/folder>
 
 - <image/folder>: Path to the folder containing images.
 - <output/segmentation/folder>: Path where the segmented output will be saved.
-
-### Extract Images from Rosbag
