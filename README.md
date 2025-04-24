@@ -3,7 +3,7 @@
 ## Extract stereo images from a rosbag
 ```
 cd image_extraction
-bash extract_image_from_bag.sh <path/to/bagfile> <path/to/output_directory>
+bash extract_image_from_bag.sh <path/to/bagfile> <path/to/parent_output_directory>
 ```
 
 ## Extract Odom to Camera Transform from a rosbag

@@ -6,14 +6,15 @@ import argparse
 from pathlib import Path
 import cv2
 import numpy as np
+import pickle
 from rosbags.highlevel import AnyReader
 from rosbags.image import message_to_cvimage
 
 
 def extract_images(bag_file, output_dir, topic_map):
-    timesteps = []
+    print("Image Extraction Started")
+    timesteps = {}
     output = output_dir
-
 
     with AnyReader([Path(bag_file)]) as bag:
         for topic in topic_map:
@@ -43,22 +44,25 @@ def extract_images(bag_file, output_dir, topic_map):
                         os.path.join(cam_right_output_dir, str(timestamp) + ".png"),
                         right_img,
                     )
-                    timesteps.append(timestamp)
+                    timesteps[timestamp] = []
 
-                if "/{topic}/right/camera_info" in connection.topic:
+                if f"/{topic_map[topic]}/right/camera_info" in connection.topic:
                     cam_info_path = Path(output) / "front_cam_info.npy"
                     if not os.path.exists(cam_info_path):
                         msg = bag.deserialize(rawdata, connection.msgtype)
                         cam_info = msg.P.reshape(3, 4)[:3, :3]
                         np.save(cam_info_path, cam_info)
 
-        np.save(f"{output_dir}/front_cam_times.npy", np.array(timesteps))
+        with open(f"{output_dir}/time_transform_file.pkl", "wb") as f:
+            pickle.dump(timesteps, f)
+
+    print("Image Extraction Finished")
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--bag_file", type=str, required=True)
-    parser.add_argument("--output_dir", type=str, required=True)
+    parser.add_argument("--parent_dir", type=str, required=True)
     parser.add_argument("--img_topic_name", type=str, required=True)
     args = parser.parse_args()
 
@@ -66,4 +70,7 @@ if __name__ == "__main__":
         f"{args.img_topic_name}": "front_cam",
     }
 
-    extract_images(args.bag_file, args.output_dir, topic_map)
+    bag_name = Path(args.bag_file.strip()).stem
+    output_dir = Path(args.parent_dir)/bag_name
+
+    extract_images(args.bag_file, output_dir, topic_map)
