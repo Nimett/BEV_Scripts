@@ -1,8 +1,8 @@
-# BEV_Scripts
+# ros-bev-generator
 
-This repository is designed to generate ground truth (GT) Bird’s-Eye View (BEV) maps using ROS bag files. These bag files include:
+This repository is designed to generate Bird’s-Eye View (BEV) maps using stereo images and TF Tree from ROS bag files. These bag files include:
 
-	- Stereo camera images, extracted from the original dataset
+	- Stereo camera images
 	- The robot’s position (odometry to camera transform), computed using ROS TF
 
 The processed bag files can be used for training or evaluating perception models that rely on accurate spatial and visual data in BEV format.
@@ -30,13 +30,11 @@ bash tf_listener.sh <path/to/your/bag/file> <path/to/parent_output_directory>
 
 ## Generate disparity and depth maps from stereo image pairs using OpenCV's StereoSGBM
 
-**Location:** `stereo_matching.py`
 ```bash
+cd depth_generation
 python stereo_matching.py \
-    --left_img_path path/to/left_image.png \
-    --right_img_path path/to/right_image.png \
-    --output_dir path/to/output_directory \
-    --cam_info_file
+    --parent_output_dir <path/to/parent_output_directory> \
+    --bag_file_name <name/of/the/bag/file>
 ```
 
 ## Generate prompt-based segmentations using Grounded-SAM for all images in a folder

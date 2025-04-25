@@ -50,7 +50,7 @@ def extract_images(bag_file, output_dir, topic_map):
                     cam_info_path = Path(output) / "front_cam_info.npy"
                     if not os.path.exists(cam_info_path):
                         msg = bag.deserialize(rawdata, connection.msgtype)
-                        cam_info = msg.P.reshape(3, 4)[:3, :3]
+                        cam_info = msg.P.reshape(3, 4)
                         np.save(cam_info_path, cam_info)
 
         with open(f"{output_dir}/time_transform_file.pkl", "wb") as f:

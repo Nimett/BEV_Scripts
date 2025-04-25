@@ -89,10 +89,10 @@ def process_image(
 
 def main(left_img_dir, right_img_dir, output_dir, cam_info_file):
     left_imgs, right_imgs = load_image_list(left_img_dir, right_img_dir)
-    
+
     disp_save_dir = Path(output_dir) / f"disp_maps"
     disp_save_dir.mkdir(parents=True, exist_ok=True)
-    
+
     depth_save_dir = Path(output_dir) / f"depth_maps"
     depth_save_dir.mkdir(parents=True, exist_ok=True)
 
@@ -120,21 +120,24 @@ def main(left_img_dir, right_img_dir, output_dir, cam_info_file):
 if __name__ == "__main__":
     parser = ArgumentParser()
 
-    parser.add_argument("--left_img_path", type=str, required=True)
-    parser.add_argument("--right_img_path", type=str, required=True)
     parser.add_argument(
-        "--output_dir",
+        "--parent_output_dir",
         type=str,
         required=True,
-        help="Parent directory where depth and disparity map folders will be generated",
+        help="Parent output directory",
     )
     parser.add_argument(
-        "--cam_info_file",
+        "--bag_file_name",
         type=str,
         required=True,
-        help="Path to a .npy file containing a (3, 4) camera projection matrix",
+        help="Name of the bag file",
     )
 
     args = parser.parse_args()
 
-    main(args.left_img_path, args.right_img_path, args.output_dir, args.cam_info_file)
+    output_dir = Path(args.parent_output_dir) / args.bag_file_name
+    left_img_path = output_dir / "front_cam/left"
+    right_img_path = output_dir / "front_cam/right"
+    cam_info_file = output_dir / "front_cam_info.npy"
+
+    main(left_img_path, right_img_path, output_dir, cam_info_file)
