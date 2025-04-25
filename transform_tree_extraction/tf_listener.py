@@ -45,7 +45,6 @@ def tf_listener(time_transform_file):
 
             start_time = rospy.Time.now()
             count += 1
-            print(count)
 
         except (
             tf.LookupException,
