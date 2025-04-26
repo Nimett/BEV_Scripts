@@ -1,0 +1,14 @@
+  Ground: 
+    colour: "0.4, 0.7, 0.3"
+    active: False
+    id: 1
+
+  High-standing platforms:
+    colour: "0.439, 0, 1"
+    active: False
+    id: 2
+
+  Humans: 
+    colour: "0 ,0, 1"
+    active: True
+    id: 3
