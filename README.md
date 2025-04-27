@@ -47,10 +47,6 @@ bash tf_listener.sh <path/to/your/bag/file> <path/to/parent_output_directory>
 ```
 
 ### 3. Generate Depth Maps from stereo image pairs using OpenCV's StereoSGBM
-Install required Python packages:
-```bash
-pip install numpy opencv-python tqdm pyyaml pillow
-```
 Run the stereo matching script:
 ```bash
 cd depth_generation
