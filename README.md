@@ -1,37 +1,57 @@
 # ros-bev-generator
 
-This repository is designed to generate semantic Bird’s-Eye View (BEV) maps using stereo images and TF Tree from ROS bag files. These bag files include:
+This repository provides a pipeline to generate semantic Bird’s-Eye View (BEV) maps from ROS bag files. These bag files include:
 
 	- Stereo camera images
 	- The robot’s position (odometry to camera transform), computed using ROS TF
 
 Generated semantic BEV maps can be used for training or evaluating perception models that rely on accurate spatial and visual data in BEV format.
 
-Follow the steps below in order to generate BEV maps.
+## Key Features
+- **Stereo Image Extraction**: Extract stereo images from ROS bag files.
+- **TF Tree Extraction**: Extract odometry-to-camera transforms using ROS TF.
+- **Depth Map Generation**: Compute disparity and depth maps using OpenCV's StereoSGBM.
+- **Semantic Segmentation**: Perform prompt-based segmentation using Grounded-SAM.
+- **BEV Map Generation**: Generate semantic BEV maps from processed data.
 
-## Extract stereo images from a rosbag
+## Installation
+1. Clone this repository:
+   ```bash
+   git clone https://github.com/your-username/ros-bev-generator.git
+   cd ros-bev-generator
+   ```
+2. Install Python dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+## Workflow Overview
+Follow these steps to generate BEV maps:
+
+### 1. Extract Stereo Images
+Extract stereo images from a ROS bag file:
 ```bash
 cd image_extraction
 bash extract_image_from_bag.sh <path/to/bagfile> <path/to/parent_output_directory>
 ```
-
-## Extract Odom to Camera Transform from a rosbag
-
-### Start roscore
+### 2. Extract Odometry-to-Camera Transform
+Start the ROS core in one terminal:
 ```bash
 roscore
 ```
-### In another terminal, run the script
-```
+In another terminal, run the transform extraction script:
+```bash
 source /opt/ros/<your_ros_distribution>/setup.bash
 cd transform_tree_extraction
 bash tf_listener.sh <path/to/your/bag/file> <path/to/parent_output_directory>
 ```
 
-## Generate disparity and depth maps from stereo image pairs using OpenCV's StereoSGBM
+### 3. Generate Depth Maps from stereo image pairs using OpenCV's StereoSGBM
+Install required Python packages:
 ```bash
 pip install numpy opencv-python tqdm pyyaml pillow
 ```
+Run the stereo matching script:
 ```bash
 cd depth_generation
 python stereo_matching.py \
@@ -39,14 +59,13 @@ python stereo_matching.py \
     --bag_file_name <name/of/the/bag/file>
 ```
 
-## Generate prompt-based segmentations using Grounded-SAM for all images in a folder
-
-### Clone the Repository 
+### 4. Generate Prompt-based Semantic Segmentation using Grounded-SAM for All Images in a Folder
+Clone the [Grounded-Segment-Anything](https://github.com/Nimett/Grounded-Segment-Anything) repository:
 ```bash
 git clone https://github.com/Nimett/Grounded-Segment-Anything.git
 ```
 
-### Run Batch Segmentation
+Run batch segmentation:
 ```bash
 bash run_batch_segmentation.sh 
     <path/to/parent_output_directory> 
@@ -54,12 +73,11 @@ bash run_batch_segmentation.sh
     [image/extension]
     [segmentation/classes]
 ```
-Arguments:
+**Arguments**:
+- `[image_extension]` (Optional): Image file extension (default: `png`).
+- `[segmentation_classes]` (Optional): Comma-separated segmentation classes (default: `"High-standing platforms, Ground, Humans"`).
 
-	- [image_extension] – (Optional) Image file extension. Default: png
-	- [segmentation_classes] – (Optional) Comma-seperated segmentation classes. Default: "High-standing platforms, Ground, Humans"
-
-## Generate BEV maps
-
+### 5. Generate BEV Maps
+Run the BEV map generation script:
 ```bash
 python generate_bev_maps.py --seg_class_file <path/to/seg_classes.yaml> --parent_output_dir <path/to/parent_output_directory> --bag_file_name <bag_file_name>
