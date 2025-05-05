@@ -11,7 +11,7 @@ from rosbags.highlevel import AnyReader
 from rosbags.image import message_to_cvimage
 
 
-def extract_images(bag_file, output_dir, topic_map):
+def extract_images(bag_file, output_dir, cam_info_dir, topic_map):
     print("Image Extraction Started")
     timesteps = {}
     output = output_dir
@@ -47,7 +47,7 @@ def extract_images(bag_file, output_dir, topic_map):
                     timesteps[timestamp] = []
 
                 if f"/{topic_map[topic]}/right/camera_info" in connection.topic:
-                    cam_info_path = Path(output) / "front_cam_info.npy"
+                    cam_info_path = Path(cam_info_dir) / "front_cam_info.npy"
                     if not os.path.exists(cam_info_path):
                         msg = bag.deserialize(rawdata, connection.msgtype)
                         cam_info = msg.P.reshape(3, 4)
@@ -72,5 +72,6 @@ if __name__ == "__main__":
 
     bag_name = Path(args.bag_file.strip()).stem
     output_dir = Path(args.parent_dir)/bag_name
+    cam_info_dir = Path(args.parent_dir)
 
-    extract_images(args.bag_file, output_dir, topic_map)
+    extract_images(args.bag_file, output_dir, cam_info_dir, topic_map)
