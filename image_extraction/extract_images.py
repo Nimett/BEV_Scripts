@@ -47,6 +47,12 @@ def extract_images(bag_file, output_dir, cam_info_dir, topic_map):
                     timesteps[timestamp] = []
 
                 if f"/{topic_map[topic]}/right/camera_info" in connection.topic:
+                    cam_info_path = Path(cam_info_dir) / "right_cam_info.npy"
+                    if not os.path.exists(cam_info_path):
+                        msg = bag.deserialize(rawdata, connection.msgtype)
+                        cam_info = msg.P.reshape(3, 4)
+                        np.save(cam_info_path, cam_info)
+                if f"/{topic_map[topic]}/left/camera_info" in connection.topic:
                     cam_info_path = Path(cam_info_dir) / "front_cam_info.npy"
                     if not os.path.exists(cam_info_path):
                         msg = bag.deserialize(rawdata, connection.msgtype)

@@ -72,7 +72,7 @@ def process_image(
         beta=disparity.max(),
         norm_type=cv2.NORM_MINMAX,
     )
-    np.save(disp_save_dir / f"{img_name}_inpainted.npy", disp_inpainted_orig_scale)
+    np.save(disp_save_dir / f"{img_name}.npy", disp_inpainted_orig_scale)
     disparity_inpainted_colored = cv2.applyColorMap(
         np.uint8(disparity_inpainted), cv2.COLORMAP_JET
     )
@@ -82,7 +82,7 @@ def process_image(
 
     # Compute the depth map and save
     np.save(
-        depth_save_dir / f"{img_name}_inpainted.npy",
+        depth_save_dir / f"{img_name}.npy",
         (focal_length * baseline) / disp_inpainted_orig_scale,
     )
 
@@ -138,6 +138,6 @@ if __name__ == "__main__":
     output_dir = Path(args.parent_output_dir) / args.bag_file_name
     left_img_path = output_dir / "front_cam/left"
     right_img_path = output_dir / "front_cam/right"
-    cam_info_file = output_dir / "front_cam_info.npy"
+    cam_info_file = output_dir / "right_cam_info.npy"
 
     main(left_img_path, right_img_path, output_dir, cam_info_file)
