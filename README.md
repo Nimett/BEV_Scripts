@@ -2,8 +2,9 @@
 
 This repository provides a pipeline to generate semantic Bird’s-Eye View (BEV) maps from ROS bag files. These bag files include:
 
-	- Stereo camera images
-	- The robot’s position (odometry to camera transform), computed using ROS TF
+- Stereo camera images
+- The robot’s position (odometry to camera transform), computed using ROS TF
+- Left and Right Camera Info
 
 Generated semantic BEV maps can be used for training or evaluating perception models that rely on accurate spatial and visual data in BEV format.
 
@@ -17,7 +18,7 @@ Generated semantic BEV maps can be used for training or evaluating perception mo
 ## Installation
 1. Clone this repository:
    ```bash
-   git clone https://github.com/your-username/ros-bev-generator.git
+   git clone https://github.com/Nimett/ros-bev-generator.git
    cd ros-bev-generator
    ```
 2. Install Python dependencies:
@@ -54,6 +55,7 @@ python stereo_matching.py \
     --parent_output_dir <path/to/parent_output_directory> \
     --bag_file_name <name/of/the/bag/file>
 ```
+Note: Provide the bag file name without the .bag extension for the --bag_file_name argument.
 
 ### 4. Generate Prompt-based Semantic Segmentation using Grounded-SAM for All Images in a Folder
 Clone the [Grounded-Segment-Anything](https://github.com/Nimett/Grounded-Segment-Anything) repository:
@@ -69,11 +71,21 @@ bash run_batch_segmentation.sh
     [image/extension]
     [segmentation/classes]
 ```
+Note: Provide the bag file name without the .bag extension.
+
 **Arguments**:
 - `[image_extension]` (Optional): Image file extension (default: `png`).
-- `[segmentation_classes]` (Optional): Comma-separated segmentation classes (default: `"High-standing platforms, Ground, Humans"`).
+- `[segmentation_classes]` (Optional): Comma-separated segmentation classes (default: `"High-standing platforms,Ground,Humans"`).
 
 ### 5. Generate BEV Maps
 Run the BEV map generation script:
 ```bash
-python generate_bev_maps.py --seg_class_file <path/to/seg_classes.yaml> --parent_output_dir <path/to/parent_output_directory> --bag_file_name <bag_file_name>
+python generate_bev_maps.py \
+    --parent_output_dir <path/to/parent_output_directory> \
+    --bag_file_name <bag_file_name> \
+    [--seg_class_file <path/to/seg_classes.yaml>]
+```
+Note: Provide the bag file name without the .bag extension.
+
+**Arguments**:
+- `[--seg_class_file]` (Optional): Path to the segmentation class config file (default: semantic_bev_generation/seg_classes.yaml).
