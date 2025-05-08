@@ -72,8 +72,9 @@ if __name__ == "__main__":
     parser.add_argument("--img_topic_name", type=str, required=True)
     args = parser.parse_args()
 
+    cam_name = args.img_topic_name.split("/")[1]
     topic_map = {
-        f"{args.img_topic_name}": "front_cam",
+        f"{args.img_topic_name}": cam_name,
     }
 
     bag_name = Path(args.bag_file.strip()).stem
