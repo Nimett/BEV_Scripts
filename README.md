@@ -15,6 +15,23 @@ Generated semantic BEV maps can be used for training or evaluating perception mo
 - **Semantic Segmentation**: Perform prompt-based segmentation using Grounded-SAM.
 - **BEV Map Generation**: Generate semantic BEV maps from processed data.
 
+Bag files are assumed to have following topics:
+- **/front_cam/stereo/image_rect_color/compressed**
+
+    Rectified and compressed stereo image stream from the front camera.
+
+- **/front_cam/right/camera_info**
+
+    Camera info for the right front stereo camera.
+
+- **/front_cam/left/camera_info**
+
+    Camera info for the left front stereo camera.
+
+- **/tf**
+
+    Must include the transform from /odom to /front_cam_left_camera_optical_frame
+
 ## Installation
 1. Clone this repository:
    ```bash
