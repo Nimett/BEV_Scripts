@@ -36,6 +36,7 @@ Bag files are assumed to have following topics:
 - Operating System: Ubuntu 20.04
 - ROS Version: Noetic
 - Python Version: 3.10.14
+- Docker Version: 25.0.4
 
 ## Installation
 1. Clone this repository:

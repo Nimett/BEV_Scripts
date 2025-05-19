@@ -1,6 +1,6 @@
 #! /bin/bash
 
-Check if the Docker image ros2_img_ext exists
+# Check if the Docker image ros2_img_ext exists
 if ! docker images | grep -q "ros2_img_ext"; then
     echo "Docker image ros2_img_ext not found. Building the image..."
     docker build -t ros2_img_ext .
