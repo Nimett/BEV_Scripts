@@ -32,6 +32,11 @@ Bag files are assumed to have following topics:
 
     Must include the transform from /odom to /front_cam_left_camera_optical_frame
 
+## This project was developed and tested with the following environment:
+- Operating System: Ubuntu 20.04
+- ROS Version: Noetic
+- Python Version: 3.10.14
+
 ## Installation
 1. Clone this repository:
    ```bash
