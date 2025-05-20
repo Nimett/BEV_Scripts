@@ -55,9 +55,12 @@ Follow these steps to generate BEV maps:
 ### 1. Extract Stereo Images
 Extract stereo images from a ROS bag file:
 ```bash
-cd image_extraction
+cd <path/to>/ros-bev-generator/image_extraction
 bash extract_image_from_bag.sh <path/to/bagfile> <path/to/parent_output_directory>
 ```
+
+Note: Camera info files are generated only if they do not already exist in the root output directory. This is because it is assumed that the camera parameters remain consistent across all bag files.
+
 ### 2. Extract Odometry-to-Camera Transform
 Start the ROS core in one terminal:
 ```bash
@@ -66,14 +69,14 @@ roscore
 In another terminal, run the transform extraction script:
 ```bash
 source /opt/ros/<your_ros_distribution>/setup.bash
-cd transform_tree_extraction
+cd <path/to>/ros-bev-generator/transform_tree_extraction
 bash tf_listener.sh <path/to/your/bag/file> <path/to/parent_output_directory>
 ```
 
 ### 3. Generate Depth Maps from stereo image pairs using OpenCV's StereoSGBM
 Run the stereo matching script:
 ```bash
-cd depth_generation
+cd <path/to>/ros-bev-generator/depth_generation
 python stereo_matching.py \
     --parent_output_dir <path/to/parent_output_directory> \
     --bag_file_name <name/of/the/bag/file>
@@ -103,7 +106,9 @@ Note: Provide the bag file name without the .bag extension.
 ### 5. Generate BEV Maps
 Run the BEV map generation script:
 ```bash
-python generate_bev_maps.py \
+cd <path/to>/ros-bev-generator/semantic_bev_generation
+
+python bev_map_generation.py \
     --parent_output_dir <path/to/parent_output_directory> \
     --bag_file_name <bag_file_name> \
     [--seg_class_file <path/to/seg_classes.yaml>]
