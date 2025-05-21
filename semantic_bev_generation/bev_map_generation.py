@@ -247,7 +247,7 @@ def main():
     parser.add_argument(
         "--seg_class_file",
         help="YAML file with segmentation classes",
-        default="semantic_bev_generation/seg_classes.yaml",
+        default="seg_classes.yaml",
     )
     parser.add_argument(
         "--parent_output_dir",
@@ -269,7 +269,7 @@ def main():
     setup_output_dirs(working_folder / "bev_maps")
 
     seg_classes = load_segmentation_classes(args.seg_class_file)
-    cam_par = np.load(working_folder / f"{camera}_info.npy")
+    cam_par = np.load(Path(args.parent_output_dir) / f"{camera}_info.npy")
 
     depth_maps = load_depth_maps(working_folder / "depth_maps")
     masks = load_masks_or_labels(working_folder / "segmentation", "mask")
