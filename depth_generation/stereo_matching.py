@@ -138,6 +138,6 @@ if __name__ == "__main__":
     output_dir = Path(args.parent_output_dir) / args.bag_file_name
     left_img_path = output_dir / "front_cam/left"
     right_img_path = output_dir / "front_cam/right"
-    cam_info_file = output_dir / "right_cam_info.npy"
+    cam_info_file = Path(args.parent_output_dir) / "right_cam_info.npy"
 
     main(left_img_path, right_img_path, output_dir, cam_info_file)

@@ -69,6 +69,7 @@ roscore
 In another terminal, run the transform extraction script:
 ```bash
 source /opt/ros/<your_ros_distribution>/setup.bash
+
 cd <path/to>/ros-bev-generator/transform_tree_extraction
 bash tf_listener.sh <path/to/your/bag/file> <path/to/parent_output_directory>
 ```
@@ -77,6 +78,7 @@ bash tf_listener.sh <path/to/your/bag/file> <path/to/parent_output_directory>
 Run the stereo matching script:
 ```bash
 cd <path/to>/ros-bev-generator/depth_generation
+
 python stereo_matching.py \
     --parent_output_dir <path/to/parent_output_directory> \
     --bag_file_name <name/of/the/bag/file>
@@ -91,6 +93,8 @@ git clone https://github.com/Nimett/Grounded-Segment-Anything.git
 
 Run batch segmentation:
 ```bash
+cd Grounded-Segment-Anything
+
 bash run_batch_segmentation.sh 
     <path/to/parent_output_directory> 
     <name/of/the/bag/file>
