@@ -46,8 +46,9 @@ def backproject_points(cam_intrinsics, pixel_coords, depths, ext_matrix, image_h
     homogeneous_pixels = euclidean_to_homogeneous(pixel_coords)
     rays = cam_intrinsics_inv @ homogeneous_pixels
 
-    # Normalize rays
-    rays /= np.linalg.norm(rays, axis=0, keepdims=True)
+    # Normalize rays so z-component is 1
+    # rays /= np.linalg.norm(rays, axis=0, keepdims=True)
+    rays /= rays[2, :]
 
     # Scale rays by depth to get 3D points in camera frame
     depths_flat = depths.flatten()
